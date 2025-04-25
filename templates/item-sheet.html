@@ -1,0 +1,143 @@
+<form class="{{cssClass}} .item-sheet" autocomplete="off">
+    <header class="sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
+        </div>
+    </header>
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="description">Description</a>
+        <a class="item" data-tab="type">{{item.system.type}}</a>
+    </nav>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+
+        {{!-- Description Tab --}}
+        <div class="tab" data-group="primary" data-tab="description">
+            <div class="resource">
+                <label>type:</label>
+
+                <select name="system.type">
+                    {{#select item.system.type}}
+                    {{#each item.system.types as |t|}}
+                    <option value="{{t}}">{{t}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+            <hr>
+            <div class="resource inline">
+                <label>Quantity:</label>
+                <input type="text" name="system.quantity" value="{{item.system.quantity}}" data-dtype="Number" />
+            </div>
+            <div class="resource inline">
+                <label>Weight:</label>
+                <input type="text" name="system.weight" value="{{item.system.weight}}" data-dtype="Number" />
+            </div>
+            <div class="resource inline">
+                <label>Cost:</label>
+                <input type="text" name="system.cost" value="{{item.system.cost}}" data-dtype="Number" />
+            </div>
+            <div class="resource inline">
+                <label>Size:</label>
+                <input type="text" name="system.size" value="{{item.system.size}}" data-dtype="text" />
+            </div>
+            <div class="resource inline">
+                <label>Availability:</label>
+                <input type="text" name="system.availability" value="{{item.system.availability}}" data-dtype="text" />
+            </div>
+            <div class="resource inline">
+                <label>Quality:</label>
+                <input type="text" name="system.quality" value="{{item.system.quality}}" data-dtype="text" />
+            </div>
+            <hr>
+            <div class="resource">
+                <label>skill:</label>
+                <input type="text" name="system.skill" value="{{item.system.skill}}" data-dtype="text" />
+                <label>attribute:</label>
+                <input type="text" name="system.attribute" value="{{item.system.attribute}}" data-dtype="text" />
+            </div>
+            <hr>
+            <div class="resource">
+                <label>equipped_modifiers:</label>
+                <input type="text" name="system.equipped_modifiers" value="{{item.system.equipped_modifiers}}" data-dtype="text" />
+            </div>
+            <hr>
+            <label>Description:</label>
+            {{editor item.system.description target="system.description" button=true owner=owner editable=editable}}
+        </div>
+
+        {{!-- Combat Tab --}}
+        <div class="tab attributes" data-group="primary" data-tab="type">
+            {{#ifeq item.system.type "none"}}
+            <label>Nothing to see here. Move along.</label>
+            {{/ifeq}}
+            {{#ifeq item.system.type "container"}}
+            <div class="resource inline">
+                <label>holds:</label>
+                <input type="text" name="system.container.holds" value="{{item.system.container.holds}}" data-dtype="Number" />
+            </div>
+            <div class="resource inline">
+                <label>adds:</label>
+                <input type="text" name="system.container.adds" value="{{item.system.container.adds}}" data-dtype="Number" />
+            </div>
+            <div class="resource inline">
+                <label>slots:</label>
+                <input type="text" name="system.container.slots" value="{{item.system.container.slots}}" data-dtype="Number" />
+            </div>
+            {{/ifeq}}
+            {{#ifeq item.system.type "weapon"}}
+            <div class="resource inline">
+                <label>range:</label>
+                <input type="text" name="system.weapon.range" value="{{item.system.weapon.range}}" data-dtype="Number" />
+            </div>
+            <div class="resource inline">
+                <label>damage dice:</label>
+                <input type="text" name="system.weapon.damagedice" value="{{item.system.weapon.damagedice}}" data-dtype="Number" />
+            </div>
+            <div class="resource inline">
+                <label>bonus damage:</label>
+                <input type="text" name="system.weapon.bonusdamage" value="{{item.system.weapon.bonusdamage}}" data-dtype="Number" />
+            </div>
+            <div class="resource inline">
+                <label>bonus attack:</label>
+                <input type="text" name="system.weapon.bonus_attack" value="{{item.system.weapon.bonus_attack}}" data-dtype="Number"/>
+            </div>
+            {{#each system.weapon.damagetype}}
+            <div class="resource">
+                <label>damage type:</label>
+                <input class="damage-array" type="text" data-dindex="{{@key}}" value="{{this}}" data-dtype="text" />
+            </div>
+            {{/each}}
+            <div class="resource">
+                <label>special:</label>
+                <input type="text" name="system.weapon.special" value="{{item.system.weapon.special}}" data-dtype="text" />
+            </div>
+            {{/ifeq}}
+            {{#ifeq item.system.type "armor"}}
+            <div class="resource">
+                <label>type:</label>
+                <input type="text" name="system.armor.type" value="{{item.system.armor.type}}" data-dtype="text" />
+            </div>
+            <div class="resource">
+                <label>special:</label>
+                <input type="text" name="system.armor.special" value="{{item.system.armor.special}}" data-dtype="text" />
+            </div>
+            <div class="resource">
+                <label>soak:</label>
+                <input type="number" name="system.armor.soak" value="{{item.system.armor.soak}}" data-dtype="Number" />
+            </div>
+            {{#each system.armor.ineffective}}
+            <div class="resource">
+                <label>ineffective:</label>
+                <input class="ineffective-array" type="text" data-dindex="{{@key}}" value="{{this}}" data-dtype="text" />
+            </div>
+            {{/each}}
+            {{/ifeq}}
+            
+        </div>
+    </section>
+</form>
